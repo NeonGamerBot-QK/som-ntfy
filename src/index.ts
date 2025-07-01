@@ -1,0 +1,13 @@
+import { Database } from "bun:sqlite";
+const NTFY_SERVER = Bun.env.NTFY_SERVER || 'https://ntfy.sh';
+const NTFY_TOPIC = Bun.env.NTFY_TOPIC || 'summer-of-making-updates';
+
+console.log(`Sending requests to ${NTFY_SERVER}/${NTFY_TOPIC}`);
+
+// stalking db :3c
+const db = new Database(Bun.env.DB_PATH || 'stalking.db');
+// create table thingymabob
+db.run(`CREATE TABLE IF NOT EXISTS  projects (id SERIAL PRIMARY KEY, title TEXT NOT NULL, description TEXT NOT NULL, category VARCHAR(255), readme_link TEXT, demo_link TEXT, repo_link TEXT, slack_id VARCHAR(64), created_at TIMESTAMP NOT NULL DEFAULT NOW(), updated_at TIMESTAMP NOT NULL DEFAULT NOW());`)
+db.run(`CREATE TABLE IF NOT EXISTS devlogs (id SERIAL PRIMARY KEY, text TEXT NOT NULL, attachment TEXT, project_id INTEGER NOT NULL REFERENCES projects(id) ON DELETE CASCADE, slack_id VARCHAR(64), created_at TIMESTAMP NOT NULL DEFAULT NOW(), updated_at TIMESTAMP NOT NULL DEFAULT NOW());`)
+db.run(`CREATE TABLE IF NOT EXISTS payouts (id UUID PRIMARY KEY, amount NUMERIC NOT NULL, created_at TIMESTAMP NOT NULL DEFAULT NOW(), payable_type VARCHAR(255), slack_id VARCHAR(64));`)
+db.run(`CREATE TABLE IF NOT EXISTS payout_responses (slack_id VARCHAR(64) PRIMARY KEY, shells INTEGER DEFAULT 0);`)
