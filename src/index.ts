@@ -29,10 +29,10 @@ async function thisGetsPolled() {
         project.slack_id,
       ],
     ).run();
-       fetch(`${NTFY_SERVER}/${NTFY_TOPIC}`, {
-        method: "POST",
-        body: `New Project! \n\nTitle: ${project.title}\nDescription: ${project.description}\nCategory: ${project.category}\nReadme Link: ${project.readme_link}\nDemo Link: ${project.demo_link}\nRepo Link: ${project.repo_link}`.trim(),
-    })
+    fetch(`${NTFY_SERVER}/${NTFY_TOPIC}`, {
+      method: "POST",
+      body: `New Project! \n\nTitle: ${project.title}\nDescription: ${project.description}\nCategory: ${project.category}\nReadme Link: ${project.readme_link}\nDemo Link: ${project.demo_link}\nRepo Link: ${project.repo_link}`.trim(),
+    });
   }
 }
 
